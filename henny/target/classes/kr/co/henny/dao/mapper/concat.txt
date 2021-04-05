@@ -1,4 +1,0 @@
-select * from  board where title like  % #{param1} %
-
-
-"123"    => concat('%',#{param1},'%')  =>    %123%

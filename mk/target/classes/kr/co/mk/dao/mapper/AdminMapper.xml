@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybats-3-mapper.dtd">
+
+
+<mapper namespace="kr.co.mk.dao.AdminDAO">
+
+	<!-- json 데이터 활용을 위한 계층구조 조회 -->
+	<select id="category" resultType="kr.co.mk.vo.CategoryVo">
+	
+	select level, cateName, cateCode, cateCodeRef from goods_category
+	start with cateCodeRef is null connect by prior cateCode = cateCodeRef
+	
+	</select>
+	
+	<!-- 상품 등록 -->
+	<insert id="register" parameterType="kr.co.mk.vo.GoodsVo">
+	insert into tbl_goods (gdsNum,gdsName,cateCode,gdsPrice,gdsStock,gdsDes,gdsImg,gdsThumbImg)
+	values (tbl_goods_seq.nextval,#{gdsName},#{cateCode},#{gdsPrice},#{gdsStock},#{gdsDes},#{gdsImg},#{gdsThumbImg})
+	</insert>
+	
+	<!-- 상품목록 리스트 + 페이징 -->
+<!-- 	<select id="goodsList" resultType="kr.co.mk.vo.GoodsVo">
+  select *
+  from (
+  		select rownum rnum, gdsNum, gdsName, cateCode, gdsPrice, gdsStock, gdsDes, gdsImg, gdsDate
+    from ( 
+    		select gdsNum, gdsName, cateCode, gdsPrice, gdsStock, gdsDes, gdsImg, gdsDate
+     		  from tbl_goods
+        	order by gdsNum desc
+        )
+       )
+       where rnum between #{startRow} and #{endRow}
+	</select> -->
+	<!-- 상품목록 리스트 + 페이징 + 썸네일 -->
+	<select id="goodsList" resultType="kr.co.mk.vo.GoodsViewVo">
+select * from (select * from
+  (select ROWNUM rnum,g.gdsNum, g.gdsName, g.cateCode, c.cateCodeRef, c.cateName, g.gdsImg, g.gdsThumbImg,gdsPrice,gdsStock,gdsDate
+         from tbl_goods g
+             inner join goods_category c
+                 on g.cateCode = c.cateCode)
+                 where rnum between #{startRow} and #{endRow})order by gdsNum desc
+	</select>
+	
+	<!-- 단일 게시글 조회 -->
+	<select id="view" resultType="kr.co.mk.vo.GoodsVo">
+		select * from tbl_goods where gdsNum=#{param}
+	</select>
+	
+	<!-- 페이징 처리를 위한 레코드 수 조회 -->
+	<select id="getRow" resultType="java.lang.Integer">
+	select count(*) 
+	from tbl_goods
+	</select>
+	
+	<!-- 게시글 수정을 위해 기본값 조회 inner join on -->
+	<select id="goodsView" resultType="kr.co.mk.vo.GoodsViewVo">
+		select g.gdsNum,g.gdsName,g.cateCode,c.cateCodeRef,c.cateName,gdsPrice,gdsStock,gdsDes,gdsImg,gdsDate,
+				g.gdsImg,g.gdsThumbImg
+			from tbl_goods g
+				inner join goods_category c
+				 on g.cateCode = c.cateCode
+				where g.gdsNum = #{param}
+	</select>
+	
+	<!-- 게시글 수정 -->
+	<update id="update_ok" parameterType="kr.co.mk.vo.GoodsVo">
+		update tbl_goods
+		   set 
+		   		gdsName = #{gdsName},
+		   		cateCode = #{cateCode},
+		   		gdsPrice = #{gdsPrice},
+		   		gdsStock = #{gdsStock},
+		   		gdsDes = #{gdsDes},
+		   		gdsImg = #{gdsImg},
+		   		gdsThumbImg = #{gdsThumbImg}
+		   			where gdsNum = #{gdsNum}
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="delete">
+		delete from tbl_goods where gdsNum = #{param}
+	</delete>
+</mapper>

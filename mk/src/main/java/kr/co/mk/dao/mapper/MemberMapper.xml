@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybats-3-mapper.dtd">
+
+<mapper namespace="kr.co.mk.dao.MemberDAO">
+
+	<insert id="signUp" parameterType="kr.co.mk.vo.MemberVo">
+	insert into tbl_member(userId,userPass,userName,userPhon)
+	values (#{userId},#{userPass},#{userName},#{userPhon})
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="login" resultType="Integer">
+	 select count(*) from tbl_member where userId=#{param1} and userPass=#{param2}
+	</select>
+
+	<select id="login_ok" parameterType="kr.co.mk.vo.MemberVo" resultType="kr.co.mk.vo.MemberVo">
+		select * from tbl_member where userId=#{userId} and userPass=#{userPass}
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/views/mk">
+ <!-- 제외할 패턴 -->
+ <excludes>
+  <pattern>/auth.do</pattern>
+  <pattern>/exclude</pattern>
+ </excludes>
+ <!-- 기본 패턴 -->
+ <decorator name="default" page="default.jsp">
+  <pattern>*</pattern> 
+ </decorator>
+ <!-- 모바일 패턴 -->
+<!--  <decorator name="mobileDefault" page="mobileDefault.jsp"> -->
+<!--   <pattern>/m.*.do</pattern>  -->
+<!--  </decorator> -->
+<!-- </decorators> -->
+<!-- 	관리자의 대한 요청 레이아웃 선언 -->
+<decorator name="admin" page="default.jsp">
+	<pattern>/admin/*</pattern>
+	</decorator>
+</decorators>
+ 
