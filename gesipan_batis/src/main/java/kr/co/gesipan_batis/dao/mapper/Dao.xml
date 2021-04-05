@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybats-3-mapper.dtd">
+
+<mapper namespace="kr.co.gesipan_batis.dao.Dao">
+
+<insert id="write_ok" parameterType="kr.co.gesipan_batis.dto.Dto">
+	insert into gesipan(title,content,pwd,sung,kind,email,email2,writeday)
+	values(#{title},#{content},#{pwd},#{sung},#{kind},#{email},#{email2},now())
+</insert>
+
+<select id="list" resultType="kr.co.gesipan_batis.dto.Dto">
+	select * from gesipan order by id desc
+</select>
+
+<update id="hit">
+	update gesipan set hit = hit+1 where id=#{param}
+</update>
+
+<select id="content" resultType="kr.co.gesipan_batis.dto.Dto">
+	select * from gesipan where id=#{param}
+</select>
+
+<select id="pwd" resultType="String">
+	select pwd from gesipan where id=#{param}
+</select>
+
+<update id="update_ok" parameterType="kr.co.gesipan_batis.dto.Dto">
+	update gesipan set title=#{title},content=#{content},sung=#{sung},kind=#{kind},email=#{email},email2=#{email2} where id=#{id}
+</update>
+
+<delete id="delete">
+	delete from gesipan where id=#{id}
+</delete>
+
+</mapper>
