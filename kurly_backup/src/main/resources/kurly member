@@ -1,0 +1,35 @@
+use database kurly
+
+create table member(
+id int auto_increment primary key,
+userid char(16) unique,
+pwd char(12),
+name char(10),
+email varchar(100),
+phone char(15),
+zip char(5),
+juso varchar(100),
+juso_etc varchar(100),
+sung int,
+state int default 0,
+birth date,
+writeday date
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
